@@ -1,6 +1,6 @@
 package org.util
 
-class Shipment(status:String, public val id: String, expectedDeliveryDateTimestamp: Long = 0, currentLocation: String= ""): Subject<ShipmnetObserver>{
+abstract class Shipment(status:String, public val id: String, protected val createdDate: Long, expectedDeliveryDateTimestamp: Long = 0, currentLocation: String= ""): Subject<ShipmnetObserver>{
 
     private val _notes: MutableList<String> = mutableListOf()
     val notes
@@ -11,32 +11,38 @@ class Shipment(status:String, public val id: String, expectedDeliveryDateTimesta
 
     private val observers = mutableListOf<ShipmnetObserver>()
 
+
     public var currentLocation: String = currentLocation
         set(location){
             field = location
+            this.verifyConditions()
             this.notifyObservers()
         }
 
     public var status:String = status
         set(status){
             field = status
+            this.verifyConditions()
             this.notifyObservers()
         }
 
     public var expectedDeliveryDateTimestamp: Long = expectedDeliveryDateTimestamp
         set(date){
             field = date
+            this.verifyConditions()
             this.notifyObservers()
         }
 
     public fun addNote(note: String){
         _notes.add(note)
+        this.verifyConditions()
         this.notifyObservers()
     }
 
     public fun addStatus(status: String, timeStamp: Long){
         _updateHistory.add(StatusChange(this.status, status, timeStamp))
         this.status = status
+        this.verifyConditions()
         this.notifyObservers()
     }
 
@@ -48,6 +54,15 @@ class Shipment(status:String, public val id: String, expectedDeliveryDateTimesta
     }
     override fun notifyObservers(){
         observers.forEach { it.update(this) }
+    }
+
+    abstract protected fun conditions(): String?
+
+    private fun verifyConditions(){
+        val note = conditions()
+        if (note != null){
+            this.addNote(note)
+        }
     }
 
 }
