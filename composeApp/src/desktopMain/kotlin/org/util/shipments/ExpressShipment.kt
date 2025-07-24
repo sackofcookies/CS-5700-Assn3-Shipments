@@ -7,4 +7,6 @@ class ExpressShipment(status: String, id: String, createdDate: Long, expectedDel
         }
         return null
     }
+
+    override val type = Shipment.Type.EXPRESS
 }

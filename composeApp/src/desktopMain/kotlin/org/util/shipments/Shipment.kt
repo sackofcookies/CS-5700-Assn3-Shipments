@@ -11,6 +11,8 @@ abstract class Shipment(status:String, public val id: String, protected val crea
 
     private val observers = mutableListOf<ShipmnetObserver>()
 
+    abstract val type: Type
+
 
     public var currentLocation: String = currentLocation
         set(location){

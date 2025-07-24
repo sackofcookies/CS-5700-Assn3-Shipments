@@ -7,4 +7,6 @@ class BulkShipment(status: String, id: String, createdDate: Long, expectedDelive
         }
         return null
     }
+
+    override val type = Shipment.Type.BULK
 }

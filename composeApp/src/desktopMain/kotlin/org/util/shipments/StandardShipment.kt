@@ -4,4 +4,6 @@ class StandardShipment(status: String, id: String, createdDate: Long, expectedDe
     override fun conditions(): String?{
         return null
     }
+
+    override val type = Shipment.Type.STANDARD
 }
