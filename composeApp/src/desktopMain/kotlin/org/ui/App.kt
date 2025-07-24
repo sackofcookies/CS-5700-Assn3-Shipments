@@ -20,32 +20,32 @@ import java.io.File
 import androidx.compose.material.TextField
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import kotlinx.coroutines.launch
 
 import org.util.Shipment
 import org.util.LocationUpdate
 import org.util.ExpectedDeliveryUpdate
 import org.util.NoteUpdate
-import org.util.TrackingSimulator
+import org.util.TrackingData
+import org.util.trackingServer
 
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        val simulator = remember {TrackingSimulator()}
         val tracked = remember{ mutableStateListOf<TrackerViewHelper>() }
         var searchContent by remember { mutableStateOf("") }
 
-
         LaunchedEffect(true){
-            simulator.runSimulation(File("./src/desktopMain/composeResources/files/test.txt"))
+            launch {trackingServer()}
         }
 
         Column() {
             Row() {
                 TextField(searchContent, onValueChange = {searchContent = it})
                 Button(onClick = {
-                    val shipment = simulator.findShipment(searchContent)
+                    val shipment = TrackingData.findShipment(searchContent)
                     if (shipment != null){
                         tracked += TrackerViewHelper(shipment)
                         searchContent = ""
