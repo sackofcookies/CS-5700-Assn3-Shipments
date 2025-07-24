@@ -10,7 +10,18 @@ object TrackingData{
     private val shipments: MutableMap<String, Shipment> = mutableMapOf()
 
     fun findShipment(id: String): Shipment? = shipments[id]
-    fun addShipment(shipment: Shipment) = shipments.put(shipment.id, shipment)
+    private fun addShipment(shipment: Shipment) = shipments.put(shipment.id, shipment)
+    private fun updateShipment(id: String, update: Update) {
+        val shipment = this.findShipment(id)
+        if (shipment != null){
+            update.applyUpdate(shipment)
+        }
+    }
+
+    fun processInput(input: String){
+        val entries = input.split(",", limit = 4)
+        
+    }
 
 
     

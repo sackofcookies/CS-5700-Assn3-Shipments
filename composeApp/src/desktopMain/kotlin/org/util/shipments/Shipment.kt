@@ -1,6 +1,6 @@
 package org.util
 
-abstract class Shipment(status:String, public val id: String, protected val createdDate: Long, expectedDeliveryDateTimestamp: Long = 0, currentLocation: String= ""): Subject<ShipmnetObserver>{
+abstract class Shipment(status:String, public val id: String, protected val createdDate: Long, expectedDeliveryDateTimestamp: Long, currentLocation: String): Subject<ShipmnetObserver>{
 
     private val _notes: MutableList<String> = mutableListOf()
     val notes
@@ -63,6 +63,13 @@ abstract class Shipment(status:String, public val id: String, protected val crea
         if (note != null){
             this.addNote(note)
         }
+    }
+
+    enum class Type {
+        BULK,
+        EXPRESS,
+        OVERNIGHT,
+        STANDARD
     }
 
 }

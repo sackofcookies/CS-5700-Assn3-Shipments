@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     id("org.jetbrains.kotlinx.kover") version "0.7.0"
+    id("io.ktor.plugin") version "3.2.0"
 }
 
 kotlin {
@@ -23,6 +24,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation("io.ktor:ktor-server-core")
+            implementation("io.ktor:ktor-server-netty")
+            implementation("io.ktor:ktor-server-content-negotiation")
+            implementation("io.ktor:ktor-serialization-kotlinx-json")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
