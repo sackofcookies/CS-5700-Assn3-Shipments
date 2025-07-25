@@ -23,7 +23,8 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
 
 suspend fun trackingServer() {
     embeddedServer(Netty, 8000) {
@@ -33,26 +34,24 @@ suspend fun trackingServer() {
 
         routing {
             post("/input"){
-                val data = call.receiveMultipart()
-                data.forEachPart() {
-                    if (it is PartData.FormItem){
-                        TrackingData.processInput(it.value)
-                    }
-                }
-                
+                val data = call.receiveParameters()
+                TrackingData.processInput(data["update"].toString())
+                call.respondRedirect("/")
             }
 
             get("/") {
-            call.respondHtml(HttpStatusCode.OK) {
-                head {
-                    title { +"My Ktor Page" }
-                }
-                body {
-                    h1 { +"Hello from Ktor!" }
-                    p { +"This is a paragraph generated with Kotlin HTML DSL." }
+                call.respondHtml(HttpStatusCode.OK) {
+                    head {
+                        title { +"Shipment Tracking" }
+                    }
+                    body {
+                        form(action="/input", method = FormMethod.post) {
+                            textInput(name="update")
+                            submitInput() { value = "Update" }
+                        }
+                    }
                 }
             }
         }
-        }
-    }.start(wait = true)
+    }.start(wait = false)
 }

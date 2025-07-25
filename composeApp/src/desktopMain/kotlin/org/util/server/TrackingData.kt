@@ -24,7 +24,7 @@ object TrackingData{
             val id = entries[1]
             val timeStamp = entries[2].toLongOrNull()
             if (timeStamp != null && id != ""){
-                if (entries.size == 4){
+                if (entries.size >= 4){
                     val otherInfo = entries[3]
                     when (entries[0]){
                         "created" -> {

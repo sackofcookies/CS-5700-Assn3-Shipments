@@ -38,7 +38,7 @@ fun App() {
         var searchContent by remember { mutableStateOf("") }
 
         LaunchedEffect(true){
-            launch {trackingServer()}
+            launch {trackingServer()}    
         }
 
         Column() {
