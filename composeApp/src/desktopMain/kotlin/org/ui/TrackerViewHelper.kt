@@ -29,6 +29,8 @@ fun formatTimestamp(timestamp: Long): String {
 
 class TrackerViewHelper(shipment: Shipment): ShipmnetObserver{
     val shipmentId: String = shipment.id
+    val shipmentType: String = shipment.type.toString()
+    val shipmentCreated: Long = shipment.createdDate
     val shipmentNotes = mutableStateListOf<String>()
     val shipmentUpdateHistory = mutableStateListOf<StatusChange>()
     var expectedShipmentDeliveryDate = mutableStateOf<Long>(shipment.expectedDeliveryDateTimestamp)
@@ -53,7 +55,8 @@ class TrackerViewHelper(shipment: Shipment): ShipmnetObserver{
     @Composable
     public fun compose(){
         Column(modifier = Modifier.paddingFromBaseline(top = 50.dp)) {
-            Text("Tracking Shipment: " + shipmentId)
+            Text("Tracking " + shipmentType + " Shipment: " + shipmentId)
+            Text("Ordered: " + formatTimestamp(shipmentCreated))
             Text("Status: " + shipmentStatus.value)
             Text("Location: " + shipmentLocation.value)
             Text("Expected Delivery Date: " + formatTimestamp(expectedShipmentDeliveryDate.value))

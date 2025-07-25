@@ -1,13 +1,19 @@
 package org.ui
 
 import kotlin.test.*
-import org.util.Shipment
-import org.util.StatusChange
+import org.util.*
+import org.ui.TrackerViewHelper
 
 class TrackerViewHelperTest {
 
     private fun createShipment(): Shipment {
-        val shipment = Shipment("created", "testId", expectedDeliveryDateTimestamp = 1234567890L, currentLocation = "Initial Location")
+        val shipment = StandardShipment(
+            status = "created",
+            id = "testId",
+            createdDate = 0L,
+            expectedDeliveryDateTimestamp = 1234567890L,
+            currentLocation = "Initial Location"
+        )
         shipment.addNote("Initial note")
         shipment.addStatus("shipped", 1111111111L)
         return shipment

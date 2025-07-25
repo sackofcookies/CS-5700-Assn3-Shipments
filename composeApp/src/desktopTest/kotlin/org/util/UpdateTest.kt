@@ -4,9 +4,14 @@ import kotlin.test.*
 
 class UpdateTest {
 
+    private fun testShipment(id: String): Shipment {
+        // Use StandardShipment for testing since it has no special condition rules
+        return StandardShipment("created", id, createdDate = 0L, expectedDeliveryDateTimestamp = 0L, currentLocation = "")
+    }
+
     @Test
     fun testStatusUpdate() {
-        val shipment = Shipment("created", "s1")
+        val shipment = testShipment("s1")
         val update = StatusUpdate("shipped", 1234L)
 
         update.applyUpdate(shipment)
@@ -21,7 +26,7 @@ class UpdateTest {
 
     @Test
     fun testNoteUpdate() {
-        val shipment = Shipment("created", "s2")
+        val shipment = testShipment("s2")
         val update = NoteUpdate("Package scanned", 5678L)
 
         update.applyUpdate(shipment)
@@ -31,7 +36,7 @@ class UpdateTest {
 
     @Test
     fun testLocationUpdate() {
-        val shipment = Shipment("created", "s3")
+        val shipment = testShipment("s3")
         val update = LocationUpdate("Chicago", 4321L)
 
         update.applyUpdate(shipment)
@@ -41,7 +46,7 @@ class UpdateTest {
 
     @Test
     fun testExpectedDeliveryUpdate() {
-        val shipment = Shipment("created", "s4")
+        val shipment = testShipment("s4")
         val update = ExpectedDeliveryUpdate("delayed", 9999L, 8888L)
 
         update.applyUpdate(shipment)

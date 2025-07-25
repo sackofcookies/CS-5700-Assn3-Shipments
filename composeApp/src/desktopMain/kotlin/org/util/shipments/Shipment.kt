@@ -1,6 +1,6 @@
 package org.util
 
-abstract class Shipment(status:String, public val id: String, protected val createdDate: Long, expectedDeliveryDateTimestamp: Long = 0, currentLocation: String= ""): Subject<ShipmnetObserver>{
+abstract class Shipment(status:String, public val id: String, public val createdDate: Long, expectedDeliveryDateTimestamp: Long, currentLocation: String): Subject<ShipmnetObserver>{
 
     private val _notes: MutableList<String> = mutableListOf()
     val notes
@@ -10,6 +10,10 @@ abstract class Shipment(status:String, public val id: String, protected val crea
         get() = _updateHistory.map { it }.toMutableList()
 
     private val observers = mutableListOf<ShipmnetObserver>()
+
+    abstract val type: Type
+
+    private var conditionsTripped: Boolean = false
 
 
     public var currentLocation: String = currentLocation
@@ -59,10 +63,24 @@ abstract class Shipment(status:String, public val id: String, protected val crea
     abstract protected fun conditions(): String?
 
     private fun verifyConditions(){
-        val note = conditions()
-        if (note != null){
-            this.addNote(note)
+        if (!this.conditionsTripped){
+            val note = conditions()
+            if (note != null){
+                this.conditionsTripped = true
+                this.addNote(note)
+            }
         }
+    }
+
+    enum class Type {
+        BULK,
+        EXPRESS,
+        OVERNIGHT,
+        STANDARD
+    }
+
+    init{
+        this.verifyConditions()
     }
 
 }
