@@ -32,7 +32,8 @@ object TrackingData{
                                 "bulk" -> this.addShipment(ShipmentFactory(Shipment.Type.BULK, "created", id, timeStamp))
                                 "express" -> this.addShipment(ShipmentFactory(Shipment.Type.EXPRESS, "created", id, timeStamp))
                                 "overnight" -> this.addShipment(ShipmentFactory(Shipment.Type.OVERNIGHT, "created", id, timeStamp))
-                                "standard" -> this.addShipment(ShipmentFactory(Shipment.Type.OVERNIGHT, "created", id, timeStamp))
+                                "standard" -> this.addShipment(ShipmentFactory(Shipment.Type.STANDARD, "created", id, timeStamp))
+                                else -> {}
                             }
                         }
                         "shipped", "delayed" -> {

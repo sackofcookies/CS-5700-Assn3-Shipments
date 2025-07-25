@@ -79,4 +79,8 @@ abstract class Shipment(status:String, public val id: String, public val created
         STANDARD
     }
 
+    init{
+        this.verifyConditions()
+    }
+
 }
